@@ -4,13 +4,13 @@ import chalk from 'chalk'
 import scanner from 'i18next-scanner'
 import vfs from 'vinyl-fs'
 import sort from 'gulp-sort'
-import typescriptTransform from "./src/utils/typescript-transform"
+import typescriptTransform from "./utils/typescript-transform"
 
 const {
   withDefaults,
   defaultPath,
   defaultAddPath,
-} = require("./src/utils/default-options")
+} = require("./utils/default-options")
 
 export async function sourceNodes (
   { reporter, actions, createNodeId, createContentDigest },
@@ -18,7 +18,7 @@ export async function sourceNodes (
 ) {
   const { createNode } = actions
   reporter.info(
-    `[nextjs-plugin-drupal-i18next]: fetching Drupal interface translations from ${pluginOptions.baseUrl}${defaultPath}`
+    `[next-drupal-interface-i18n]: fetching Drupal interface translations from ${pluginOptions.baseUrl}${defaultPath}`
   )
   // Retrieve Drupal interface translations.
   const response = await axios.get(`${pluginOptions.baseUrl}${defaultPath}`, {
@@ -57,7 +57,7 @@ export function onPostBuild ({ reporter }, pluginOptions, callback) {
   // Merge default i18next options with pluginOptions
   const { i18nextScannerOptions } = withDefaults(pluginOptions)
   reporter.info(
-    `[nextjs-plugin-drupal-i18next]: scanning files for translatable strings.`
+    `[next-drupal-interface-i18n]: scanning files for translatable strings.`
   )
   vfs
     .src(i18nextScannerOptions.input)
@@ -77,7 +77,7 @@ export function onPostBuild ({ reporter }, pluginOptions, callback) {
         let devTranslationKeys = Object.keys(devTranslations)
 
         reporter.info(
-          `[gatsby-plugin-drupal-i18next]: pushing new Drupal translations to ${pluginOptions.baseUrl}${defaultAddPath}`
+          `[next-drupal-interface-i18n]: pushing new Drupal translations to ${pluginOptions.baseUrl}${defaultAddPath}`
         )
         const response = await axios.post(
           `${pluginOptions.baseUrl}${defaultAddPath}`,
@@ -87,7 +87,7 @@ export function onPostBuild ({ reporter }, pluginOptions, callback) {
           }
         )
         reporter.info(
-          `[gatsby-plugin-drupal-i18next]: ${response.data.message}`
+          `[next-drupal-interface-i18n]: ${response.data.message}`
         )
         callback()
       } catch (error) {
