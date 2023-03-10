@@ -1,6 +1,3 @@
-// @todo replace with a Next.js equivalent.
-import { useLocalization } from "gatsby-theme-i18n"
-
 export type I18nextTranslations = {
   [key: string]: { translation: { [key: string]: string } }
 }
@@ -8,11 +5,11 @@ export type I18nextTranslations = {
 export const processTranslationNodes = (
   translationNodes // Map into i18n expected format
 ): I18nextTranslations => {
-  const { config } = useLocalization()
+  const { i18nconfig } = require('./next-i18next.config');
   const translations = {}
   // Create our translations structure
-  config.forEach(
-    language => (translations[language.code] = { translation: {} })
+  i18nconfig.locales.forEach(
+    language => (translations[language] = { translation: {} })
   )
 
   translationNodes.forEach((node: any) => {

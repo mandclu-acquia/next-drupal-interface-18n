@@ -4,8 +4,6 @@ import { useDrupalTranslations } from "./hooks/use-drupal-translations"
 import { I18nextTranslations, processTranslationNodes } from "./helpers"
 import { defaultNamespace } from "./utils/default-options"
 import { I18nextProvider } from "react-i18next"
-// @todo find a Next equivalent for theme-i18n
-import { useLocalization } from "gatsby-theme-i18n"
 
 export const TranslationsContext = createContext({})
 
@@ -25,13 +23,13 @@ export const TranslationsProvider: React.FC = ({ children }) => {
 
 export const I18nProvider: React.FC<{ i18n: any }> = ({ children, i18n }) => {
   const translations = useContext(TranslationsContext)
-  const { config } = useLocalization()
+  const { i18nconfig } = require('./next-i18next.config');
 
-  config.forEach(language => {
+  i18nconfig.locales.forEach(language => {
     i18n.addResources(
-      language.code,
+      language,
       defaultNamespace,
-      translations[language.code][defaultNamespace]
+      translations[language][defaultNamespace]
     )
   })
 
