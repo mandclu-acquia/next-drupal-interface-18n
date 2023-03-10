@@ -1,10 +1,10 @@
-const axios = require("axios")
-const fs = require("fs")
-const chalk = require("chalk")
-const scanner = require("i18next-scanner")
-const vfs = require("vinyl-fs")
-const sort = require("gulp-sort")
-const typescriptTransform = require("./src/utils/typescript-transform")
+import axios from 'axios'
+import fs from 'fs'
+import chalk from 'chalk'
+import scanner from 'i18next-scanner'
+import vfs from 'vinyl-fs'
+import sort from 'gulp-sort'
+import typescriptTransform from "./src/utils/typescript-transform"
 
 const {
   withDefaults,
@@ -12,10 +12,10 @@ const {
   defaultAddPath,
 } = require("./src/utils/default-options")
 
-exports.sourceNodes = async (
+export async function sourceNodes (
   { reporter, actions, createNodeId, createContentDigest },
   pluginOptions
-) => {
+) {
   const { createNode } = actions
   reporter.info(
     `[nextjs-plugin-drupal-i18next]: fetching Drupal interface translations from ${pluginOptions.baseUrl}${defaultPath}`
@@ -53,7 +53,7 @@ exports.sourceNodes = async (
   return
 }
 
-exports.onPostBuild = ({ reporter }, pluginOptions, callback) => {
+export function onPostBuild ({ reporter }, pluginOptions, callback) {
   // Merge default i18next options with pluginOptions
   const { i18nextScannerOptions } = withDefaults(pluginOptions)
   reporter.info(
@@ -102,8 +102,8 @@ exports.onPostBuild = ({ reporter }, pluginOptions, callback) => {
     })
 }
 
-// This lets Gatsby know what to expect for Gatsby nodes of type DrupalTranslation
-exports.createSchemaCustomization = ({ actions }) => {
+// This lets Next know what to expect for nodes of type DrupalTranslation
+export function createSchemaCustomization ({ actions }) {
   const { createTypes } = actions
 
   createTypes(`
